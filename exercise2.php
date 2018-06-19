@@ -9,28 +9,10 @@ include("connect.php")
         <meta charset="UTF-8">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <!-- <link href="css/style.css" rel="stylesheet"> -->
+        <link href="css/style.css" rel="stylesheet">
+       
         <style>
-  
-            .box{
-                width: 80%;
-                border: 2px solid grey;
-                margin: 0 auto;
-                margin-top: 15px;
-                padding: 15px;
-                background-color: #ddd;
-            }
 
-            td{    
-                line-height: 1.5em;
-                padding: 15px;
-                border: 1px solid black;
-                background-color: #aaa;
-            }
-            #updateBtn{
-                font-size: 2em;
-                border-radius: 50%;
-            }
         </style>
     </head>
     <body>
@@ -194,14 +176,14 @@ include("connect.php")
                 </p>
                 <hr>
                 <table class="fTable">
-                    <th>
-                        <td>ID</td>
-                        <td>Firstname</td>
-                        <td>Secondname</td>
-                        <td>Email</td>
-                        <td>Registrationdate</td>
-                        <td> </td>
-                    </th>
+                    <tr>
+                        <th>Firstname</th>
+                        <th>Secondname</th>
+                        <th>Email</th>
+                        <th>Log Date</th>
+                        <th> </th>
+                        <th></th>
+                    </tr>
                     <?php
                         $data = "SELECT user_id, firstname, lastname, email, reg_date FROM User";
                         $result = mysqli_query($conn, $data);
@@ -210,18 +192,54 @@ include("connect.php")
                         {
                             
                             echo "<tr>";
-                                echo "<td>", $row->user_id, "</td>";
                                 echo "<td>", $row->firstname,"</td>";
                                 echo "<td>", $row->lastname, "</td>";
                                 echo "<td>", $row->email, "</td>";
                                 echo "<td>", $row->reg_date, "</td>";
-                                echo "<td><button id='updateBtn' onclick='function($row->user_id)'> <i class='fas fa-pencil-alt'></i></button></td>";
-                            echo "</tr>";
+                                echo "<td class='rowBtn'>
+                                <form>
+                                <button class='changeBtn' type='submit' name='changeId' id='changeBtn' value='$row->user_id'>
+                                
+                                Change</button></td>";
+                            echo "</form>";
+                                echo "<td class='rowBtn'>
+                                <form>
+                                <button class='changeBtn openModal' type='submit' name='deleteId' id='deleteBtn' value='$row->user_id'>
+                                 
+                                delete</td>";
+                            echo "</tr></form>";
                         }
-                
+                            if(isset($_GET['deleteId']))
+                            {
+                                $dId = mysqli_real_escape_string($conn, $_GET['deleteId']);
+                                $sql = "DELETE FROM User  WHERE user_id='$dId'";
+                                $result = mysqli_query($conn, $sql);
+                            }
                     ?>
                 </table>
+                <dialog id="dialog">HAloo
+                    <?php 
+                    ?>
+                    <button class="closeModal"></button>
+                </dialog>
         </div>  
-    </div>      
+    </div>  
+    <script>
+        $(document).ready(function(){
+            const modal = document.getElementById('dialog');
+            const openBtn = document.querySelector('.openModal');
+            const closeBtn = document.querySelector('.closeModal');
+
+
+        // showModal() makes modal visible (adds `open` attribute)
+        openBtn.addEventListener('click', () => modal.showModal())
+
+
+        // close() hides modal (removes `open` attribute)
+        closeBtn.addEventListener('click', () => modal.close())
+        
+        })
+
+    </script>    
     </body>
 </html>
