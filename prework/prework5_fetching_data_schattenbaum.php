@@ -18,12 +18,13 @@ include("connection.php");
             
             while($row = mysqli_fetch_object($result))
             {
-                var_dump($result);
+                
                 echo "<tr>";
                 echo "<td>", $row->user_id, "</td>";
                 echo "<td>", $row->firstname,"</td>";
                 echo "<td>", $row->lastname, "</td>";
                 echo "<td>", $row->reg_date, "</td>";
+                echo "<td><button id='update' onclick='function($row->user_id)'> Change</button></td>";
                 echo "<tr>";
             }
             
