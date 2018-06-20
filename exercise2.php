@@ -10,12 +10,16 @@ include("connect.php")
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="css/style.css" rel="stylesheet">
-       
+        <script
+        src="https://code.jquery.com/jquery-3.3.1.js"
+        integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+        crossorigin="anonymous"></script>
         <style>
 
         </style>
     </head>
     <body>
+    
     <div class="container">
         <div class="box">
             <h1>Exercise 2</h1>
@@ -180,66 +184,101 @@ include("connect.php")
                         <th>Firstname</th>
                         <th>Secondname</th>
                         <th>Email</th>
-                        <th>Log Date</th>
-                        <th> </th>
-                        <th></th>
+                        
                     </tr>
                     <?php
                         $data = "SELECT user_id, firstname, lastname, email, reg_date FROM User";
                         $result = mysqli_query($conn, $data);
                         
-                        while($row = mysqli_fetch_object($result))
-                        {
-                            
-                            echo "<tr>";
-                                echo "<td>", $row->firstname,"</td>";
-                                echo "<td>", $row->lastname, "</td>";
-                                echo "<td>", $row->email, "</td>";
-                                echo "<td>", $row->reg_date, "</td>";
-                                echo "<td class='rowBtn'>
-                                <form>
-                                <button class='changeBtn' type='submit' name='changeId' id='changeBtn' value='$row->user_id'>
-                                
-                                Change</button></td>";
-                            echo "</form>";
-                                echo "<td class='rowBtn'>
-                                <form>
-                                <button class='changeBtn openModal' type='submit' name='deleteId' id='deleteBtn' value='$row->user_id'>
-                                 
-                                delete</td>";
-                            echo "</tr></form>";
+                        while($row = mysqli_fetch_array($result)){
+                                echo "<tr><form action='update.php' method='POST'>";
+                                echo "<td><input type='text' name='fname' value='".$row['firstname']. "' ></td>";
+                                echo "<td><input type='text' name='lname' value='".$row['lastname']. "' ></td>";
+                                echo "<td><input type='text' name='email' value='".$row['email']. "' ></td>";
+                                echo "<input type='hidden' name='id' value='".$row['user_id']. "' >";
+                                echo "<td><input class='changeBtn' type='submit'></td>";
+                                echo "</form></tr>";
                         }
-                            if(isset($_GET['deleteId']))
-                            {
-                                $dId = mysqli_real_escape_string($conn, $_GET['deleteId']);
-                                $sql = "DELETE FROM User  WHERE user_id='$dId'";
-                                $result = mysqli_query($conn, $sql);
-                            }
+
                     ?>
                 </table>
-                <dialog id="dialog">HAloo
-                    <?php 
-                    ?>
-                    <button class="closeModal"></button>
-                </dialog>
-        </div>  
+                
+                
+                
+            </div>
+            <!-- <div id="chatBox">
+                
+                    <form>
+                        <p>Here should be an ID
+                       
+                        </p>
+                        <div id="btnChatBox">
+                            <button id="chatExitBtn" class="btn"><i class='fas fa-times'></i> Cancel</button>
+                            <button id="chatSubBtn" class="btn"><i class="far fa-check-circle"></i> Submit</button>
+                        </div>
+                    </form>
+                
+            </div> -->
+
+            <?php 
+            $modal = true;
+            if ($modal==true) { ?>
+ 
+            <script>
+            $(function() {
+            $("#myModal").modal();//if you want you can have a timeout to hide the window after x seconds
+            });
+            </script>
+            
+            <!-- Modal -->
+            <div class="modal fade" id="myModal" role="dialog">
+                <div class="modal-dialog">
+            
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Modal Header</h4>
+                    </div>
+                    <div class="modal-body">
+                    <p>Sample modal window</p>
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            
+                </div>
+            </div>
+            
+            <?php } ?>
+                        
+            
+        
+        
     </div>  
     <script>
         $(document).ready(function(){
-            const modal = document.getElementById('dialog');
-            const openBtn = document.querySelector('.openModal');
-            const closeBtn = document.querySelector('.closeModal');
+            $("#chatBox").hide()
+            //message Button  open Message field---------------------------------------------------------------------------------------------------------------------
+            $('.openModal').on('click', function() {
+                var $selectedId = this.$('.openModal').val();
+                $("#chatBox").show();
+
+            });
 
 
-        // showModal() makes modal visible (adds `open` attribute)
-        openBtn.addEventListener('click', () => modal.showModal())
+            //Exit Button  get out of the Message Box---------------------------------------------------------------------------------------------------------------------
+            $('#chatExitBtn').on('click', function() {
+                console.log("hallo");
+                //parentsUntil goes back until the property in the paranthese
+                $("#content").css("opacity", "1");
+                $("#chatBox").hide();
 
 
-        // close() hides modal (removes `open` attribute)
-        closeBtn.addEventListener('click', () => modal.close())
-        
+            });
         })
-
+        
     </script>    
     </body>
 </html>
