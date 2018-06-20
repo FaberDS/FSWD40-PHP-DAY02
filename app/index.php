@@ -61,7 +61,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-warning" data-dismiss="modal">cancel</button>
-                            <button type="button" class="btn btn-danger" ><a href="deleteall.php">delete</a></button>
+                            <button type="button" class="btn btn-danger" ><a class="text-dark" href="deleteall.php">delete</a></button>
                         </div>
                     </div>
                 </div>

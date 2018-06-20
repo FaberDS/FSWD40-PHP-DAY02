@@ -1,0 +1,9 @@
+#brand{
+    font-family: 'Roboto Mono', monospace;
+}
+#logo{
+    width: 200px;
+}
+navbar li{
+    float: right;
+}
